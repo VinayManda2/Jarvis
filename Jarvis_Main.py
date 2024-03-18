@@ -5,7 +5,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUiType
-from jarvisui_own import Ui_Dialog
+from jarvisui_Gui import Ui_Dialog
 import tkinter as tk
 from tkinter import simpledialog
 import pyttsx3
@@ -39,50 +39,15 @@ system_dir = os.environ.get("SystemRoot", os.path.join(os.environ.get("SystemDri
 # Constructing the full path to Notepad
 npath = os.path.join(system_dir, "system32", "notepad.exe")
 
-def run_once(flag_file_path):
-    """
-    Check if a function has been run once by checking the existence of a flag file.
-    
-    Parameters:
-        flag_file_path (str): The path to the flag file.
-        
-    Returns:
-        bool: True if the function has not been run before and creates the flag file, False otherwise.
-    """
-    # Check if the flag file exists
-    if os.path.exists(flag_file_path):
-        print("User input has already been obtained. Skipping...")
-        return False
-    
-    # If the flag file does not exist, proceed with getting user input
-    root = tk.Tk()
-    root.withdraw()  # Hide the root window
-    
-    # Prompt user for input
+# Function to read variables from a file and set them as global
+def read_variables_from_file(filename):
     global apath, music_dir, email_id, email_pwd, sendemail_id, News_Api, api_key
-    apath = simpledialog.askstring("Input", "Enter path for apath:")
-    music_dir = simpledialog.askstring("Input", "Enter path for music_dir:")
-    email_id = simpledialog.askstring("Input", "Enter your email ID:")
-    email_pwd = simpledialog.askstring("Input", "Enter your email password:", show="*")
-    sendemail_id = simpledialog.askstring("Input", "Enter email ID to send to:")
-    News_Api = simpledialog.askstring("Input", "Enter your News API key:")
-    api_key = simpledialog.askstring("Input", "Enter your OpenWeatherMap API key:")
-    
-    # Destroy the root window after input is provided
-    root.destroy()
-    
-    # Create the flag file to indicate that user input has been obtained
-    with open(flag_file_path, "w") as f:
-        f.write("User input has been obtained. This file prevents the function from running again.")
-    
-    return True
-
-def get_user_input():
-    flag_file_path = "get_user_input.flag"  # Specify the path to the flag file
-    function_ran_first_time = run_once(flag_file_path)
-    if function_ran_first_time:
-        # Code to execute if the function ran for the first time
-        print("User input obtained successfully!")
+    with open(filename, 'r') as f:
+        for line in f:
+            key, value = line.strip().split('=')
+            key = key.strip()
+            value = value.strip()
+            globals()[key] = value
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -230,7 +195,7 @@ class MainThread(QThread):
 
 
     def TaskExecution(self):
-        get_user_input()
+        read_variables_from_file("variables.txt")
         wish()
         while True:
             query = self.takecommand()

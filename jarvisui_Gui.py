@@ -122,5 +122,9 @@ if __name__ == "__main__":
     jarvisUi = QtWidgets.QMainWindow()
     ui = Ui_Dialog()
     ui.setupUi(jarvisUi)
+    # Set the title of the dialog
+    jarvisUi.setWindowTitle("Jarvis")
+    # Set the icon for the dialog
+    jarvisUi.setWindowIcon(QtGui.QIcon("images/Iron_Template_1.gif"))
     jarvisUi.show()
     sys.exit(app.exec_())
