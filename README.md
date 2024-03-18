@@ -24,17 +24,32 @@
 
 ## Installation
 
+To run this project,First you need to generate "variables.txt" file by running "set_variables.py" file.
+
+```bash
+  python set_variables.py
+```
+
 Install required packages with 
 
 ```bash
   pip install -r requirements.txt
 ```
+Now you can run main file by 
+
+```bash
+  python jarvis_Main.py
+```
+
+
 
 
     
 ## Note
 
-For Windows users, it is recommended to install the **pyAudio** library
+- For Windows users, it is recommended to install the **pyAudio** library
+
+
 
 ## Tasks Implemented
 
